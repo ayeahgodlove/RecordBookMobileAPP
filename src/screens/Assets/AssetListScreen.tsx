@@ -1,32 +1,31 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {View, FlatList, StyleSheet} from 'react-native';
 import {List, FAB, Text} from 'react-native-paper';
-import {useFinancialRecord} from '../../hooks/financial-record.hook';
+import {useAsset} from '../../hooks/asset.hook';
 import {format} from '../../utils/format';
 import {theme} from '../../styles/theme';
-import {useCategory} from '../../hooks/category.hook';
-import {useDashboard} from '../../hooks/custom/home.hook';
-import Loader from '../../components/Loader';
+
 interface Props {
   navigation: any;
 }
-const FinancialListScreen: React.FC<Props> = ({navigation}) => {
-  const {financialRecords} = useFinancialRecord();
-  const {getCategoryName} = useCategory();
-
+const AssetListScreen: React.FC<Props> = ({navigation}) => {
+  const {assets} = useAsset();
   return (
     <View style={styles.container}>
       <FlatList
         style={{
           borderRadius: 5,
         }}
-        data={financialRecords}
+        data={assets}
         keyExtractor={item => item.id}
         renderItem={({item}) => (
           <List.Item
-            style={{backgroundColor: theme.colors.backgroundColor, marginBottom: 10}}
-            title={`${item.type.toLocaleUpperCase()}: ${format.number(
-              item.amount,
+            style={{
+              backgroundColor: theme.colors.backgroundColor,
+              marginBottom: 10,
+            }}
+            title={`${item.name.toLocaleUpperCase()}: ${format.number(
+              item.value,
             )} XAF`}
             description={
               <View
@@ -35,27 +34,31 @@ const FinancialListScreen: React.FC<Props> = ({navigation}) => {
                   justifyContent: 'space-between',
                   alignItems: 'center', // Ensures vertical alignment
                 }}>
-                <Text style={{fontSize: 15, flex: 1}}>{item.description}</Text>{' '}
+                <Text style={{fontSize: 15, flex: 1}}>
+                  {item.description +
+                    '. Acquired on the ' +
+                    format.date(item.acquireDate)}
+                </Text>{' '}
                 <Text
                   style={{
                     color: theme.colors.tertiary,
-                    fontSize: 12,
+                    fontSize: 15,
                     textAlign: 'right',
                     marginLeft: 10,
                     fontWeight: 'bold',
                   }}>
-                  {getCategoryName(item.categoryId).toLocaleUpperCase()}
+                  {item.status}
                 </Text>{' '}
               </View>
             }
-            onPress={() => console.log('View details')}
+            onPress={() => console.log('View asset details')}
           />
         )}
       />
       <FAB
         style={styles.fab}
         icon="plus"
-        onPress={() => navigation.navigate('AddFinancialRecord')}
+        onPress={() => navigation.navigate('AddAsset')}
       />
     </View>
   );
@@ -66,4 +69,4 @@ const styles = StyleSheet.create({
   fab: {position: 'absolute', right: 16, bottom: 16},
 });
 
-export default FinancialListScreen;
+export default AssetListScreen;

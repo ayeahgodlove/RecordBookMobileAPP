@@ -1,3 +1,5 @@
+import {IBaseState} from './base-state.model';
+import {IResponseBase} from './response.base';
 
 export interface IFinancialRecord {
   id: string;
@@ -10,11 +12,20 @@ export interface IFinancialRecord {
 }
 
 export const emptyFinancialRecord: IFinancialRecord = {
-  id: "",
-  categoryId: "",
-  type: "",
+  id: '',
+  categoryId: '',
+  type: '',
   amount: 0,
-  description: "",
+  description: '',
   recordDate: new Date(),
-  createdBy: "",
+  createdBy: '',
 };
+
+export interface IFinancialRecordResponse extends IResponseBase {
+  data: IFinancialRecord;
+}
+
+export interface IFinancialRecordState extends IBaseState {
+  readonly financialRecords: IFinancialRecord[];
+  readonly financialRecord: IFinancialRecord;
+}

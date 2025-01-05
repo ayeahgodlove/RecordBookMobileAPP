@@ -7,5 +7,9 @@ export const theme = {
     primary: '#3498db',
     accent: '#333',
     backgroundColor: '#fff',
+    surface: '#ffffff',
+    error: '#B00020',
+    text: '#000000',
+    onSurface: '#000000',
   },
 };

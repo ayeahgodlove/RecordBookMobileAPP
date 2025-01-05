@@ -1,21 +1,26 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {TextInput, Text} from 'react-native-paper';
 import ButtonComponent from '../../components/Button';
-import { theme } from '../../styles/theme';
+import {theme} from '../../styles/theme';
+import {authService} from '../../services/auth.service';
+import {useAuthentication} from '../../hooks/auth.hook';
+import {useDispatch} from 'react-redux';
 // import { useNavigation } from '@react-navigation/native';
 
 interface Props {
-  navigation: any
+  navigation: any;
 }
-const LoginScreen: React.FC<Props> = ({ navigation }) => {
+const LoginScreen: React.FC<Props> = ({navigation}) => {
   // const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const {isAuthenticated, isLoading, getUserLogins} = useAuthentication();
 
-  const handleLogin = () => {
-    console.log(`Email: ${email}, Password: ${password}`);
+  const handleFunction = () => {
+    getUserLogins(email, password, navigation);
   };
+  useEffect(() => {}, [isAuthenticated, isLoading]);
 
   return (
     <View style={styles.container}>
@@ -33,16 +38,18 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
         secureTextEntry
         style={styles.input}
       />
-      <ButtonComponent title="Login" mode="contained" onPress={handleLogin} />
+      <ButtonComponent
+        title="Login"
+        mode="contained"
+        onPress={handleFunction}
+      />
 
       {/* Links */}
       <View style={styles.linkContainer}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Register')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Register')}>
           <Text style={styles.linkText}>Sign Up</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('ResetPassword')}>
+        <TouchableOpacity onPress={() => navigation.navigate('ResetPassword')}>
           <Text style={styles.linkText}>Forgot Password?</Text>
         </TouchableOpacity>
       </View>

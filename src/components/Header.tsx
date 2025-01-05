@@ -8,8 +8,11 @@ interface Props {
 
 const Header: React.FC<Props> = ({title, onBackPress}) => (
   <Appbar.Header>
-    {onBackPress && <Appbar.BackAction onPress={onBackPress} />}
-    <Appbar.Content title={title} />
+    {/* {onBackPress && <Appbar.BackAction onPress={onBackPress}  />} */}
+    <Appbar.Content
+      title={title}
+      style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
+    />
   </Appbar.Header>
 );
 

@@ -14,6 +14,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {StyleSheet} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import AppNavigator from './src/navigation/AppNavigation';
+import Toast from 'react-native-toast-message';
 
 function App(): React.JSX.Element {
   return (
@@ -22,6 +23,7 @@ function App(): React.JSX.Element {
         <SafeAreaView style={styles.safeArea}>
           <NavigationContainer>
             <AppNavigator />
+            <Toast />
           </NavigationContainer>
         </SafeAreaView>
       </PaperProvider>

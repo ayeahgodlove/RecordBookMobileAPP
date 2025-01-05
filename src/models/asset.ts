@@ -1,3 +1,6 @@
+import { IBaseState } from "./base-state.model";
+import { IResponseBase } from "./response.base";
+
 export interface IAsset {
   id: string;
   name: string;
@@ -16,4 +19,14 @@ export const emptyAsset: IAsset = {
   value: 0,
   status: '',
   acquireDate: new Date(),
-};
+}; 
+
+
+export interface IAssetResponse extends IResponseBase {
+  data: IAsset;
+}
+
+export interface IAssetState extends IBaseState {
+  readonly assets: IAsset[];
+  readonly asset: IAsset;
+}
