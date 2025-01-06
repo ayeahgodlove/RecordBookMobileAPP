@@ -24,7 +24,11 @@ const FinancialListScreen: React.FC<Props> = ({navigation}) => {
         keyExtractor={item => item.id}
         renderItem={({item}) => (
           <List.Item
-            style={{backgroundColor: theme.colors.backgroundColor, marginBottom: 10}}
+            style={{backgroundColor: theme.colors.backgroundColor, marginBottom: 10,
+              borderLeftColor: '#3b49df',
+              borderLeftWidth: 10,
+              borderRadius: 5
+            }}
             title={`${item.type.toLocaleUpperCase()}: ${format.number(
               item.amount,
             )} XAF`}

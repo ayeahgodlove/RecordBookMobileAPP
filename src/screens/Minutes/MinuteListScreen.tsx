@@ -25,6 +25,9 @@ const MinuteListScreen: React.FC<Props> = ({navigation}) => {
             style={{
               backgroundColor: theme.colors.backgroundColor,
               marginBottom: 10,
+              borderLeftColor: '#1ac6ba',
+              borderLeftWidth: 10,
+              borderRadius: 5
             }}
             title={`${item.title} - ${format.date(item.meetingDate)}`}
             description={htmlToText(item.content)}

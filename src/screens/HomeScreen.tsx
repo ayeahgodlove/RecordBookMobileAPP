@@ -29,6 +29,7 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
               style={{
                 color: theme.colors.outline,
                 fontSize: 18,
+                textAlign: 'center',
               }}>
               Welcome back {user?.fullname}!
             </Text>
@@ -37,14 +38,13 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
       </Card>
 
       {/* Financial Summary */}
-      <Card style={styles.card} mode="contained">
+      <Card style={styles.card}>
         <Card.Title
           title={
             <Text
-              variant="titleLarge"
               style={{
-                color: theme.colors.primary,
                 fontSize: 18,
+                textAlign: 'center',
               }}>
               Financial Summary
             </Text>
@@ -81,39 +81,73 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
 
       {/* Assets Overview */}
       <Card style={styles.card}>
-        <Card.Title title="Assets Overview" />
+        <Card.Title
+          title={
+            <Text
+              style={{
+                fontSize: 18,
+                textAlign: 'center',
+              }}>
+              Assets Overview
+            </Text>
+          }
+        />
         <Card.Content>
-          <Text>Registered Assets: {format.number(assetStats.count)}</Text>
-          <Text>
-            Estimated Value: {format.number(assetStats.estimatedValue) + " XAF"}
-          </Text>
+          <DataTable>
+            <DataTable.Header>
+              <DataTable.Title>
+                <Text variant="titleSmall">Registered Assets</Text>
+              </DataTable.Title>
+              <DataTable.Title>
+                <Text variant="titleSmall">Estimated Value</Text>
+              </DataTable.Title>
+            </DataTable.Header>
+
+            <DataTable.Row>
+              <DataTable.Cell>{format.number(assetStats.count)}</DataTable.Cell>
+              <DataTable.Cell>
+                {format.number(assetStats.estimatedValue) + ' XAF'}
+              </DataTable.Cell>
+            </DataTable.Row>
+          </DataTable>
         </Card.Content>
       </Card>
 
       {/* Meeting Highlights */}
       <Card style={styles.card}>
-        <Card.Title title="Meeting Highlights" />
+        <Card.Title
+          title={
+            <Text
+              style={{
+                fontSize: 18,
+                textAlign: 'center',
+              }}>
+              Meeting Highlights
+            </Text>
+          }
+        />
         <Card.Content>
-          <Text>
-            Last Meeting: {meetingStats.lastMeetingTitle} -{' '}
-            {meetingStats.lastMeetingDate}
-          </Text>
-          <Text>
-            Total Meetings This Month:{' '}
-            {format.number(meetingStats.totalMeetings)}
-          </Text>
+          <DataTable>
+            <DataTable.Header>
+              <DataTable.Title>
+                <Text variant="titleSmall">Last Meeting</Text>
+              </DataTable.Title>
+              <DataTable.Title>
+                <Text variant="titleSmall">Total Meetings This Month</Text>
+              </DataTable.Title>
+            </DataTable.Header>
+
+            <DataTable.Row>
+              <DataTable.Cell>
+                {meetingStats.lastMeetingTitle} - {meetingStats.lastMeetingDate}
+              </DataTable.Cell>
+              <DataTable.Cell>
+                {format.number(meetingStats.totalMeetings)}
+              </DataTable.Cell>
+            </DataTable.Row>
+          </DataTable>
         </Card.Content>
       </Card>
-
-      {/* Recent Activities */}
-      {/* <Card style={styles.card}>
-        <Card.Title title="Recent Activities" />
-        <Card.Content>
-          <Text>1. Donation Received: $1,000 (Dec 30, 2024)</Text>
-          <Text>2. Maintenance Expense: $500 (Dec 29, 2024)</Text>
-          <Text>3. Meeting on Strategy Planning (Dec 28, 2024)</Text>
-        </Card.Content>
-      </Card> */}
     </ScrollView>
   );
 };
@@ -124,7 +158,7 @@ const styles = StyleSheet.create({
     padding: 16,
     height: '100%',
   },
-  card: {marginBottom: 16},
+  card: {marginBottom: 20},
   buttonContainer: {marginTop: 16},
   button: {marginBottom: 8},
 });

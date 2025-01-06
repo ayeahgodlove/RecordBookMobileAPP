@@ -23,6 +23,9 @@ const AssetListScreen: React.FC<Props> = ({navigation}) => {
             style={{
               backgroundColor: theme.colors.backgroundColor,
               marginBottom: 10,
+              borderLeftColor: '#08090a',
+              borderLeftWidth: 10,
+              borderRadius: 5,
             }}
             title={`${item.name.toLocaleUpperCase()}: ${format.number(
               item.value,
