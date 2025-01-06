@@ -1,16 +1,9 @@
 import {useDispatch} from 'react-redux';
-import {fetchAssetsAsync} from '../../redux/slices/asset.slice';
-import {ThunkDispatch} from 'redux-thunk';
-import {CombinedState} from '@reduxjs/toolkit/query';
-import {Action} from '@reduxjs/toolkit';
-import {fetchFinancialRecordsAsync} from '../../redux/slices/financial-record.slice';
-import {fetchMeetingMinutesAsync} from '../../redux/slices/minute.slice';
 import {useEffect, useMemo, useState} from 'react';
 import {useAsset} from '../asset.hook';
 import {useFinancialRecord} from '../financial-record.hook';
 import {useMeetingMinute} from '../meeting-minute.hook';
 import {fetchInitialDataAsync} from './initial-batch';
-import {fetchCategoriesAsync} from '../../redux/slices/category.slice';
 
 const useDashboard = () => {
   const {assets} = useAsset();
@@ -19,16 +12,16 @@ const useDashboard = () => {
   const [isGlobalLoading, setGlobalLoading] = useState(true);
 
   const dispatch: any = useDispatch();
-
+ 
   const financialStats = useMemo(
     () => ({
       totalExpense: financialRecords
         .filter(record => record.type === 'expense')
-        .reduce((a, b) => a + b.amount, 0),
+        .reduce((a, b) => a + Number(b.amount), 0),
       totalIncome: financialRecords
         .filter(record => record.type === 'income')
-        .reduce((a, b) => a + b.amount, 0),
-      totalAmount: financialRecords.reduce((a, b) => a + b.amount, 0),
+        .reduce((a, b) => a + Number(b.amount), 0),
+      totalAmount: financialRecords.reduce((a, b) => a + Number(b.amount), 0),
     }),
     [financialRecords],
   );
@@ -36,7 +29,7 @@ const useDashboard = () => {
   const assetStats = useMemo(
     () => ({
       count: assets.length,
-      estimatedValue: assets.reduce((a, b) => a + b.value, 0),
+      estimatedValue: assets.reduce((a, b) => a + Number(b.value), 0),
     }),
     [assets],
   );
@@ -50,6 +43,10 @@ const useDashboard = () => {
               meetingMinutes[meetingMinutes.length - 1].meetingDate,
             ).toDateString()
           : new Date().toDateString(),
+      lastMeetingTitle:
+        meetingMinutes.length > 0
+          ? meetingMinutes[meetingMinutes.length - 1].title
+          : 'No meetings scheduled',
     }),
     [meetingMinutes],
   );

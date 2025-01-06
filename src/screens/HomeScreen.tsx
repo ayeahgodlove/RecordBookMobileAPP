@@ -66,13 +66,13 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
 
             <DataTable.Row>
               <DataTable.Cell>
-                {format.number(financialStats.totalExpense) + " XAF"}
+                {format.number(financialStats.totalExpense) + ' XAF'}
               </DataTable.Cell>
               <DataTable.Cell>
-                {format.number(financialStats.totalIncome) + " XAF"}
+                {format.number(financialStats.totalIncome) + ' XAF'}
               </DataTable.Cell>
               <DataTable.Cell>
-                {format.number(financialStats.totalAmount) + " XAF"}
+                {format.number(financialStats.totalAmount) + ' XAF'}
               </DataTable.Cell>
             </DataTable.Row>
           </DataTable>
@@ -83,8 +83,10 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
       <Card style={styles.card}>
         <Card.Title title="Assets Overview" />
         <Card.Content>
-          <Text>Registered Assets:{assetStats.count}</Text>
-          <Text>Estimated Value:{assetStats.estimatedValue}</Text>
+          <Text>Registered Assets: {format.number(assetStats.count)}</Text>
+          <Text>
+            Estimated Value: {format.number(assetStats.estimatedValue) + " XAF"}
+          </Text>
         </Card.Content>
       </Card>
 
@@ -92,8 +94,14 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
       <Card style={styles.card}>
         <Card.Title title="Meeting Highlights" />
         <Card.Content>
-          <Text>Last Meeting: {meetingStats.lastMeetingDate}</Text>
-          <Text>Total Meetings This Month: {meetingStats.totalMeetings}</Text>
+          <Text>
+            Last Meeting: {meetingStats.lastMeetingTitle} -{' '}
+            {meetingStats.lastMeetingDate}
+          </Text>
+          <Text>
+            Total Meetings This Month:{' '}
+            {format.number(meetingStats.totalMeetings)}
+          </Text>
         </Card.Content>
       </Card>
 

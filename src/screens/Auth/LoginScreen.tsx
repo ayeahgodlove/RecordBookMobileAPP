@@ -7,6 +7,7 @@ import {authService} from '../../services/auth.service';
 import {useAuthentication} from '../../hooks/auth.hook';
 import {useDispatch} from 'react-redux';
 import KeyboardAvoidingViewContainer from '../../components/KeyboardAvoidingView';
+import {buttonStyle} from '../../styles/colors';
 // import { useNavigation } from '@react-navigation/native';
 
 interface Props {
@@ -47,6 +48,7 @@ const LoginScreen: React.FC<Props> = ({navigation}) => {
           disabled={isSubmitting}
         />
         <Button
+          style={buttonStyle}
           mode="contained"
           onPress={handleFunction}
           loading={isSubmitting}

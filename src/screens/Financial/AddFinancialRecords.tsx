@@ -13,6 +13,7 @@ import Toast from 'react-native-toast-message';
 import {fetchCategoriesAsync} from '../../redux/slices/category.slice';
 import {useDispatch} from 'react-redux';
 import KeyboardAvoidingViewContainer from '../../components/KeyboardAvoidingView';
+import {buttonStyle} from '../../styles/colors';
 
 const options = [
   {label: 'Income', value: 'income'},
@@ -49,7 +50,9 @@ const AddFinancialRecordScreen: React.FC<Props> = ({navigation}) => {
         type: 'success',
         text1: 'Record added successfully',
       });
-      navigation.navigate('FinancialList');
+      navigation.navigate('TabNavigation', {
+        screen: 'Financial', // Specify the screen inside MainNavigator
+      });
       setSubmitting(false);
     } else {
       Toast.show({
@@ -102,7 +105,12 @@ const AddFinancialRecordScreen: React.FC<Props> = ({navigation}) => {
           disabled={isSubmitting}
           multiline
         />
-        <Button mode="contained" onPress={handleAdd} loading={isSubmitting}>
+        <Button
+          icon={'content-save'}
+          style={buttonStyle}
+          mode="contained"
+          onPress={handleAdd}
+          loading={isSubmitting}>
           Add Record
         </Button>
       </View>

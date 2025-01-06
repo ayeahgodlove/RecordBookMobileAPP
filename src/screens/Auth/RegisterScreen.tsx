@@ -5,6 +5,7 @@ import {theme} from '../../styles/theme';
 import {useUser} from '../../hooks/user.hook';
 import Toast from 'react-native-toast-message';
 import KeyboardAvoidingViewContainer from '../../components/KeyboardAvoidingView';
+import {buttonStyle} from '../../styles/colors';
 
 interface Props {
   navigation: any;
@@ -87,6 +88,7 @@ const RegisterScreen: React.FC<Props> = ({navigation}) => {
         />
 
         <Button
+          style={buttonStyle}
           mode="contained"
           onPress={handleRegister}
           disabled={isSubmitting}

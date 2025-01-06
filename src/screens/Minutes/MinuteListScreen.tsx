@@ -4,6 +4,7 @@ import {List, FAB} from 'react-native-paper';
 import {useMeetingMinute} from '../../hooks/meeting-minute.hook';
 import {format} from '../../utils/format';
 import {theme} from '../../styles/theme';
+import {htmlToText} from 'html-to-text';
 
 interface Props {
   navigation: any;
@@ -26,7 +27,7 @@ const MinuteListScreen: React.FC<Props> = ({navigation}) => {
               marginBottom: 10,
             }}
             title={`${item.title} - ${format.date(item.meetingDate)}`}
-            description={item.content}
+            description={htmlToText(item.content)}
             onPress={() => console.log('View minute details')}
           />
         )}

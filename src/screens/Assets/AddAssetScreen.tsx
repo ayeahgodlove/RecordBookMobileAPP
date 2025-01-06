@@ -8,6 +8,7 @@ import {emptyAsset, IAsset} from '../../models/asset';
 import {useAuthentication} from '../../hooks/auth.hook';
 import Toast from 'react-native-toast-message';
 import KeyboardAvoidingViewContainer from '../../components/KeyboardAvoidingView';
+import {buttonStyle} from '../../styles/colors';
 
 const options = [
   {label: 'Available', value: 'Available'},
@@ -48,7 +49,9 @@ const AddAssetScreen: React.FC<Props> = ({navigation}) => {
         type: 'success',
         text1: 'Record added successfully',
       });
-      navigation.navigate('AssetList');
+      navigation.navigate('TabNavigation', {
+        screen: 'Assets', // Specify the screen inside MainNavigator
+      });
       setSubmitting(false);
     } else {
       Toast.show({
@@ -117,7 +120,12 @@ const AddAssetScreen: React.FC<Props> = ({navigation}) => {
           />
         )}
 
-        <Button mode="contained" onPress={handleAdd} loading={isSubmitting}>
+        <Button
+          icon={'content-save'}
+          style={buttonStyle}
+          mode="contained"
+          onPress={handleAdd}
+          loading={isSubmitting}>
           Add Asset
         </Button>
       </View>

@@ -28,8 +28,7 @@ const RichEditor: React.FC<Props> = ({descHTML, setDescHTML}) => {
     injectJS("document.execCommand('strikeThrough');");
   const handleFontSize = (size: any) =>
     injectJS(`document.execCommand('fontSize', false, '${size}');`);
-  const handleForeColor = (color: any) =>
-    injectJS(`document.execCommand('foreColor', false, '${color}');`);
+
   const handleOrderedList = () =>
     injectJS("document.execCommand('insertOrderedList');");
   const handleUnorderedList = () =>
@@ -195,7 +194,7 @@ const RichEditor: React.FC<Props> = ({descHTML, setDescHTML}) => {
                 class="editor" 
                 oninput="window.ReactNativeWebView.postMessage(JSON.stringify({ data: this.innerHTML }));"
               >
-                Start typing here...
+                
               </div>
             </body>
             </html>

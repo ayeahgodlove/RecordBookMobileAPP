@@ -8,6 +8,7 @@ import {useAuthentication} from '../../hooks/auth.hook';
 import Toast from 'react-native-toast-message';
 import KeyboardAvoidingViewContainer from '../../components/KeyboardAvoidingView';
 import RichEditor from '../../components/RichEditor';
+import {buttonStyle} from '../../styles/colors';
 
 interface Props {
   navigation: any;
@@ -42,7 +43,9 @@ const AddMinuteScreen: React.FC<Props> = ({navigation}) => {
         type: 'success',
         text1: 'Record added successfully',
       });
-      navigation.navigate('MinuteList');
+      navigation.navigate('TabNavigation', {
+        screen: 'Minutes', // Specify the screen inside MainNavigator
+      });
       setSubmitting(false);
     } else {
       Toast.show({
@@ -66,17 +69,7 @@ const AddMinuteScreen: React.FC<Props> = ({navigation}) => {
         <RichEditor
           descHTML={description}
           setDescHTML={setDescription}
-          // descHTML={description}
-          // setDescHTML={setDescription}676308421
         />
-        {/* <TextInput
-          label="Content"
-          value={description}
-          onChangeText={setDescription}
-          multiline
-          style={styles.input}
-          disabled={isSubmitting}
-        /> */}
 
         <TextInput
           label="Meeting Date"
@@ -99,7 +92,12 @@ const AddMinuteScreen: React.FC<Props> = ({navigation}) => {
             }}
           />
         )}
-        <Button mode="contained" onPress={handleAdd} loading={isSubmitting}>
+        <Button
+          icon={'content-save'}
+          style={buttonStyle}
+          mode="contained"
+          onPress={handleAdd}
+          loading={isSubmitting}>
           Add Minute
         </Button>
       </View>
