@@ -5,6 +5,7 @@ import {assetReducer} from './slices/asset.slice';
 import {meetingMinuteReducer} from './slices/minute.slice';
 import thunkMiddleware, { ThunkAction } from 'redux-thunk';
 import { categoryReducer } from './slices/category.slice';
+import { userReducer } from './slices/user.slice';
 
 const middlewares: [any] = [thunkMiddleware];
 const middlewareEnhancer = applyMiddleware(...middlewares);
@@ -18,7 +19,8 @@ const store = configureStore({
     financial: financialRecordReducer,
     asset: assetReducer,
     minute: meetingMinuteReducer,
-    category: categoryReducer
+    category: categoryReducer,
+    user: userReducer
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

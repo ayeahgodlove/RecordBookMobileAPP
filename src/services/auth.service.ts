@@ -11,6 +11,7 @@ const axiosInstance = axios.create({
 type userData = {email: string; password: string};
 export const authService = {
   login: async (userData: userData): Promise<any> => {
+    console.log('hello...', BASE_URL + '/auth/login', userData);
     return axiosInstance.post('/auth/login', userData);
   },
 };

@@ -41,7 +41,7 @@ const useAsset = () => {
       })
       .catch(error => {
         const {data} = error;
-
+        console.log("error: ", error)
         return false;
       });
   };

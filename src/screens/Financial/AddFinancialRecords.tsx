@@ -12,6 +12,7 @@ import {
 import Toast from 'react-native-toast-message';
 import {fetchCategoriesAsync} from '../../redux/slices/category.slice';
 import {useDispatch} from 'react-redux';
+import KeyboardAvoidingViewContainer from '../../components/KeyboardAvoidingView';
 
 const options = [
   {label: 'Income', value: 'income'},
@@ -63,47 +64,49 @@ const AddFinancialRecordScreen: React.FC<Props> = ({navigation}) => {
     dispatch(fetchCategoriesAsync() as any);
   }, []);
   return (
-    <View style={styles.container}>
-      <SelectInput
-        label="Select a type"
-        options={options}
-        value={type}
-        onValueChange={value => setType(value)}
-      />
+    <KeyboardAvoidingViewContainer>
+      <View style={styles.container}>
+        <SelectInput
+          label="Select a type"
+          options={options}
+          value={type}
+          onValueChange={value => setType(value)}
+        />
 
-      <SelectInput
-        label="Select a category"
-        options={categories.map(cat => {
-          return {
-            label: cat.name,
-            value: cat.id,
-          };
-        })}
-        value={category}
-        onValueChange={value => setCategory(value)}
-        // disabled={isSubmitting}
-      />
+        <SelectInput
+          label="Select a category"
+          options={categories.map(cat => {
+            return {
+              label: cat.name,
+              value: cat.id,
+            };
+          })}
+          value={category}
+          onValueChange={value => setCategory(value)}
+          // disabled={isSubmitting}
+        />
 
-      <TextInput
-        label="Amount"
-        value={amount}
-        onChangeText={setAmount}
-        style={styles.input}
-        keyboardType="numeric"
-        disabled={isSubmitting}
-      />
-      <TextInput
-        label="Description"
-        value={description}
-        onChangeText={setDescription}
-        style={styles.input}
-        disabled={isSubmitting}
-        multiline
-      />
-      <Button mode="contained" onPress={handleAdd} loading={isSubmitting}>
-        Add Record
-      </Button>
-    </View>
+        <TextInput
+          label="Amount"
+          value={amount}
+          onChangeText={setAmount}
+          style={styles.input}
+          keyboardType="numeric"
+          disabled={isSubmitting}
+        />
+        <TextInput
+          label="Description"
+          value={description}
+          onChangeText={setDescription}
+          style={styles.input}
+          disabled={isSubmitting}
+          multiline
+        />
+        <Button mode="contained" onPress={handleAdd} loading={isSubmitting}>
+          Add Record
+        </Button>
+      </View>
+    </KeyboardAvoidingViewContainer>
   );
 };
 

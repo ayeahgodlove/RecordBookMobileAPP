@@ -1,19 +1,25 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import DatePicker from 'react-native-date-picker';
-import {TextInput, Button} from 'react-native-paper';
+import {TextInput, Button, Text} from 'react-native-paper';
 import {useMeetingMinute} from '../../hooks/meeting-minute.hook';
 import {emptyMeetingMinute, IMeetingMinute} from '../../models/meeting-minute';
 import {useAuthentication} from '../../hooks/auth.hook';
 import Toast from 'react-native-toast-message';
+import KeyboardAvoidingViewContainer from '../../components/KeyboardAvoidingView';
+import RichEditor from '../../components/RichEditor';
 
 interface Props {
   navigation: any;
 }
 
 const AddMinuteScreen: React.FC<Props> = ({navigation}) => {
+  let richTextRef: any = useRef();
+
   const [topic, setTopic] = useState('');
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState(
+    'Clear this text and start typing...',
+  );
   const [date, setDate] = useState(new Date());
 
   const [open, setOpen] = useState(false);
@@ -48,48 +54,56 @@ const AddMinuteScreen: React.FC<Props> = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        label="Title"
-        value={topic}
-        onChangeText={setTopic}
-        style={styles.input}
-        disabled={isSubmitting}
-      />
-      <TextInput
-        label="Content"
-        value={description}
-        onChangeText={setDescription}
-        multiline
-        style={styles.input}
-        disabled={isSubmitting}
-      />
-
-      <TextInput
-        label="Meeting Date"
-        value={date.toDateString()}
-        onPress={() => setOpen(true)}
-        style={styles.input}
-        disabled={isSubmitting}
-      />
-      {open && (
-        <DatePicker
-          modal
-          open={open}
-          date={date}
-          onConfirm={selectedDate => {
-            setOpen(false);
-            setDate(selectedDate);
-          }}
-          onCancel={() => {
-            setOpen(false);
-          }}
+    <KeyboardAvoidingViewContainer>
+      <View style={styles.container}>
+        <TextInput
+          label="Title"
+          value={topic}
+          onChangeText={setTopic}
+          style={styles.input}
+          disabled={isSubmitting}
         />
-      )}
-      <Button mode="contained" onPress={handleAdd} loading={isSubmitting}>
-        Add Minute
-      </Button>
-    </View>
+        <RichEditor
+          descHTML={description}
+          setDescHTML={setDescription}
+          // descHTML={description}
+          // setDescHTML={setDescription}676308421
+        />
+        {/* <TextInput
+          label="Content"
+          value={description}
+          onChangeText={setDescription}
+          multiline
+          style={styles.input}
+          disabled={isSubmitting}
+        /> */}
+
+        <TextInput
+          label="Meeting Date"
+          value={date.toDateString()}
+          onPress={() => setOpen(true)}
+          style={styles.input}
+          disabled={isSubmitting}
+        />
+        {open && (
+          <DatePicker
+            modal
+            open={open}
+            date={date}
+            onConfirm={selectedDate => {
+              setOpen(false);
+              setDate(selectedDate);
+            }}
+            onCancel={() => {
+              setOpen(false);
+            }}
+          />
+        )}
+        <Button mode="contained" onPress={handleAdd} loading={isSubmitting}>
+          Add Minute
+        </Button>
+      </View>
+    </KeyboardAvoidingViewContainer>
   );
 };
 

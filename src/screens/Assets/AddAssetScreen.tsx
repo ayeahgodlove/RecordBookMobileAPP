@@ -7,6 +7,7 @@ import {useAsset} from '../../hooks/asset.hook';
 import {emptyAsset, IAsset} from '../../models/asset';
 import {useAuthentication} from '../../hooks/auth.hook';
 import Toast from 'react-native-toast-message';
+import KeyboardAvoidingViewContainer from '../../components/KeyboardAvoidingView';
 
 const options = [
   {label: 'Available', value: 'Available'},
@@ -59,66 +60,68 @@ const AddAssetScreen: React.FC<Props> = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        label="Asset Name"
-        value={name}
-        onChangeText={setName}
-        style={styles.input}
-        disabled={isSubmitting}
-      />
-
-      <TextInput
-        label="Value"
-        value={value}
-        onChangeText={setValue}
-        style={styles.input}
-        keyboardType="numeric"
-        disabled={isSubmitting}
-      />
-      <TextInput
-        label="Description"
-        value={description}
-        onChangeText={setDescription}
-        style={styles.input}
-        multiline
-        disabled={isSubmitting}
-      />
-
-      <SelectInput
-        label="Select status"
-        options={options}
-        value={status}
-        onValueChange={value => setStatus(value)}
-      />
-
-      <TextInput
-        label="Acquired Date"
-        value={date.toDateString()}
-        onPress={() => setOpen(true)}
-        // onChangeText={setDescription}
-        style={styles.input}
-        disabled={isSubmitting}
-      />
-      {open && (
-        <DatePicker
-          modal
-          open={open}
-          date={date}
-          onConfirm={selectedDate => {
-            setOpen(false);
-            setDate(selectedDate);
-          }}
-          onCancel={() => {
-            setOpen(false);
-          }}
+    <KeyboardAvoidingViewContainer>
+      <View style={styles.container}>
+        <TextInput
+          label="Asset Name"
+          value={name}
+          onChangeText={setName}
+          style={styles.input}
+          disabled={isSubmitting}
         />
-      )}
 
-      <Button mode="contained" onPress={handleAdd} loading={isSubmitting}>
-        Add Asset
-      </Button>
-    </View>
+        <TextInput
+          label="Value"
+          value={value}
+          onChangeText={setValue}
+          style={styles.input}
+          keyboardType="numeric"
+          disabled={isSubmitting}
+        />
+        <TextInput
+          label="Description"
+          value={description}
+          onChangeText={setDescription}
+          style={styles.input}
+          multiline
+          disabled={isSubmitting}
+        />
+
+        <SelectInput
+          label="Select status"
+          options={options}
+          value={status}
+          onValueChange={value => setStatus(value)}
+        />
+
+        <TextInput
+          label="Acquired Date"
+          value={date.toDateString()}
+          onPress={() => setOpen(true)}
+          // onChangeText={setDescription}
+          style={styles.input}
+          disabled={isSubmitting}
+        />
+        {open && (
+          <DatePicker
+            modal
+            open={open}
+            date={date}
+            onConfirm={selectedDate => {
+              setOpen(false);
+              setDate(selectedDate);
+            }}
+            onCancel={() => {
+              setOpen(false);
+            }}
+          />
+        )}
+
+        <Button mode="contained" onPress={handleAdd} loading={isSubmitting}>
+          Add Asset
+        </Button>
+      </View>
+    </KeyboardAvoidingViewContainer>
   );
 };
 

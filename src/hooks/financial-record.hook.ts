@@ -44,7 +44,8 @@ const useFinancialRecord = () => {
         }
       })
       .catch(error => {
-        const {data} = error;
+        const {data, message} = error;
+        console.log("test: ", error)
 
         return false;
       });

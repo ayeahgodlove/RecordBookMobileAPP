@@ -1,3 +1,5 @@
+import {IBaseState} from './base-state.model';
+import {IResponseBase} from './response.base';
 import {IRole} from './role';
 
 export interface IUser {
@@ -35,3 +37,12 @@ export const emptyUser: IUser = {
   authStrategy: '',
   verified: false,
 };
+
+export interface IUserResponse extends IResponseBase {
+  data: IUser;
+}
+
+export interface IUserState extends IBaseState {
+  readonly users: IUser[];
+  readonly user: IUser;
+}

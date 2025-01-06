@@ -11,6 +11,7 @@ import {Provider as ReduxProvider} from 'react-redux';
 import {theme} from './src/styles/theme';
 import store from './src/redux/store';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {StyleSheet} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import AppNavigator from './src/navigation/AppNavigation';
@@ -20,12 +21,14 @@ function App(): React.JSX.Element {
   return (
     <ReduxProvider store={store}>
       <PaperProvider theme={theme}>
-        <SafeAreaView style={styles.safeArea}>
-          <NavigationContainer>
-            <AppNavigator />
-            <Toast />
-          </NavigationContainer>
-        </SafeAreaView>
+        <GestureHandlerRootView style={{flex: 1}}>
+          <SafeAreaView style={styles.safeArea}>
+            <NavigationContainer>
+              <AppNavigator />
+              <Toast />
+            </NavigationContainer>
+          </SafeAreaView>
+        </GestureHandlerRootView>
       </PaperProvider>
     </ReduxProvider>
   );
