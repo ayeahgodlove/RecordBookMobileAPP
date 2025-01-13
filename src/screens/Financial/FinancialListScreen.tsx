@@ -7,12 +7,12 @@ import {theme} from '../../styles/theme';
 import {useCategory} from '../../hooks/category.hook';
 import {useDashboard} from '../../hooks/custom/home.hook';
 import Loader from '../../components/Loader';
+import {RECORD_TYPE} from '../../constants/constant';
 interface Props {
   navigation: any;
 }
 const FinancialListScreen: React.FC<Props> = ({navigation}) => {
-  const {financialRecords} = useFinancialRecord();
-  const {getCategoryName} = useCategory();
+  const {financialRecordsWithNames} = useFinancialRecord();
 
   return (
     <View style={styles.container}>
@@ -20,16 +20,18 @@ const FinancialListScreen: React.FC<Props> = ({navigation}) => {
         style={{
           borderRadius: 5,
         }}
-        data={financialRecords}
+        data={financialRecordsWithNames}
         keyExtractor={item => item.id}
         renderItem={({item}) => (
           <List.Item
-            style={{backgroundColor: theme.colors.backgroundColor, marginBottom: 10,
+            style={{
+              backgroundColor: theme.colors.backgroundColor,
+              marginBottom: 10,
               borderLeftColor: '#3b49df',
               borderLeftWidth: 10,
-              borderRadius: 5
+              borderRadius: 5,
             }}
-            title={`${item.type.toLocaleUpperCase()}: ${format.number(
+            title={`${item.recordTypeName?.toLocaleUpperCase()}: ${format.number(
               item.amount,
             )} XAF`}
             description={
@@ -48,7 +50,9 @@ const FinancialListScreen: React.FC<Props> = ({navigation}) => {
                     marginLeft: 10,
                     fontWeight: 'bold',
                   }}>
-                  {getCategoryName(item.categoryId).toLocaleUpperCase()}
+                  {item.recordTypeName === RECORD_TYPE.INCOME
+                    ? item.incomeTypeName?.toLocaleUpperCase()
+                    : item.expenseTypeName?.toLocaleUpperCase()}
                 </Text>{' '}
               </View>
             }

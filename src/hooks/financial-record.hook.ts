@@ -9,6 +9,9 @@ import {
   setActiveFinancialRecord,
 } from '../redux/slices/financial-record.slice';
 import {financialRecordService} from '../services/financial-record.service';
+import {useExpenseType} from './expense-type.hook';
+import {useIncomeType} from './income-type.hook';
+import {useRecordType} from './record-type.hook';
 
 const useFinancialRecord = () => {
   const financialRecords = useSelector<RootState, IFinancialRecord[]>(
@@ -32,6 +35,29 @@ const useFinancialRecord = () => {
     }
   }, [dispatch, initialFetch]);
 
+  const {expenseTypes} = useExpenseType();
+  const {incomeTypes} = useIncomeType();
+  const {recordTypes} = useRecordType();
+
+  const financialRecordsWithNames = financialRecords.map(record => {
+    const expenseType = expenseTypes.find(
+      expenseType => expenseType.id === record.expenseTypeId,
+    );
+    const incomeType = incomeTypes.find(
+      incomeType => incomeType.id === record.incomeTypeId,
+    );
+    const recordType = recordTypes.find(
+      recordType => recordType.id === record.recordTypeId,
+    );
+
+    return {
+      ...record,
+      expenseTypeName: expenseType ? expenseType.name : null,
+      incomeTypeName: incomeType ? incomeType.name : null,
+      recordTypeName: recordType ? recordType.name : null,
+    };
+  });
+
   const addFinancialRecord = async (financialRecord: IFinancialRecord) => {
     return await financialRecordService
       .create(financialRecord)
@@ -45,7 +71,7 @@ const useFinancialRecord = () => {
       })
       .catch(error => {
         const {data, message} = error;
-        console.log("test: ", error)
+        console.log('test: ', error);
 
         return false;
       });
@@ -92,6 +118,7 @@ const useFinancialRecord = () => {
     editFinancialRecord,
     setFinancialRecord,
     loading,
+    financialRecordsWithNames,
   };
 };
 

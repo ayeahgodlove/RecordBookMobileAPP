@@ -4,26 +4,30 @@ import {useAsset} from '../asset.hook';
 import {useFinancialRecord} from '../financial-record.hook';
 import {useMeetingMinute} from '../meeting-minute.hook';
 import {fetchInitialDataAsync} from './initial-batch';
+import {RECORD_TYPE} from '../../constants/constant';
 
 const useDashboard = () => {
   const {assets} = useAsset();
-  const {financialRecords} = useFinancialRecord();
+  const {financialRecordsWithNames} = useFinancialRecord();
   const {meetingMinutes} = useMeetingMinute();
   const [isGlobalLoading, setGlobalLoading] = useState(true);
 
   const dispatch: any = useDispatch();
- 
+
   const financialStats = useMemo(
     () => ({
-      totalExpense: financialRecords
-        .filter(record => record.type === 'expense')
+      totalExpense: financialRecordsWithNames
+        .filter(record => record.recordTypeName === RECORD_TYPE.EXPENSE)
         .reduce((a, b) => a + Number(b.amount), 0),
-      totalIncome: financialRecords
-        .filter(record => record.type === 'income')
+      totalIncome: financialRecordsWithNames
+        .filter(record => record.recordTypeName === RECORD_TYPE.INCOME)
         .reduce((a, b) => a + Number(b.amount), 0),
-      totalAmount: financialRecords.reduce((a, b) => a + Number(b.amount), 0),
+      totalAmount: financialRecordsWithNames.reduce(
+        (a, b) => a + Number(b.amount),
+        0,
+      ),
     }),
-    [financialRecords],
+    [financialRecordsWithNames],
   );
 
   const assetStats = useMemo(

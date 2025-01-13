@@ -1,48 +1,58 @@
 import React, {useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {TextInput, Button, Menu} from 'react-native-paper';
+import {TextInput, Button, RadioButton, Text} from 'react-native-paper';
 import SelectInput from '../../components/SelectInput';
 import {useAuthentication} from '../../hooks/auth.hook';
-import {useCategory} from '../../hooks/category.hook';
 import {useFinancialRecord} from '../../hooks/financial-record.hook';
 import {
   emptyFinancialRecord,
   IFinancialRecord,
 } from '../../models/financial-record';
 import Toast from 'react-native-toast-message';
-import {fetchCategoriesAsync} from '../../redux/slices/category.slice';
 import {useDispatch} from 'react-redux';
 import KeyboardAvoidingViewContainer from '../../components/KeyboardAvoidingView';
 import {buttonStyle} from '../../styles/colors';
-
-const options = [
-  {label: 'Income', value: 'income'},
-  {label: 'Expense', value: 'expense'},
-];
+import {useRecordType} from '../../hooks/record-type.hook';
+import {fetchRecordTypesAsync} from '../../redux/slices/record-type.slice';
+import {RECORD_TYPE} from '../../constants/constant';
+import {useExpenseType} from '../../hooks/expense-type.hook';
+import {useIncomeType} from '../../hooks/income-type.hook';
+import {fetchIncomeTypesAsync} from '../../redux/slices/income-type.slice';
+import {fetchExpenseTypesAsync} from '../../redux/slices/expense-type.slice';
 
 interface Props {
   navigation: any;
 }
 const AddFinancialRecordScreen: React.FC<Props> = ({navigation}) => {
-  const [category, setCategory] = useState('');
-  const [type, setType] = useState('');
+  const [expenseType, setExpenseType] = useState('');
+  const [incomeType, setIncomeType] = useState('');
   const [amount, setAmount] = useState('0');
   const [description, setDescription] = useState('');
+  const [recordType, setRecordType] = useState('');
+
   const {user} = useAuthentication();
-  const {categories} = useCategory();
+  const {expenseTypes} = useExpenseType();
+  const {incomeTypes} = useIncomeType();
+  const {recordTypes, getRecordType} = useRecordType();
   const {addFinancialRecord} = useFinancialRecord();
   const dispatch = useDispatch();
   const [isSubmitting, setSubmitting] = useState(false);
+  const [recordTypeOption, setRecordTypeOption] = useState('');
+
+  const handleRecordType = (option: string) => {
+    setRecordType(option);
+  };
 
   const handleAdd = async () => {
     setSubmitting(true);
     const obj: IFinancialRecord = {
       ...emptyFinancialRecord,
-      categoryId: category,
-      type,
       amount: Number(amount),
       description,
       createdBy: user?.id ?? '',
+      expenseTypeId: expenseType,
+      incomeTypeId: incomeType,
+      recordTypeId: recordType
     };
     const feedback = await addFinancialRecord(obj);
     if (feedback) {
@@ -64,30 +74,58 @@ const AddFinancialRecordScreen: React.FC<Props> = ({navigation}) => {
   };
 
   useEffect(() => {
-    dispatch(fetchCategoriesAsync() as any);
-  }, []);
+    dispatch(fetchRecordTypesAsync() as any);
+    dispatch(fetchIncomeTypesAsync() as any);
+    dispatch(fetchExpenseTypesAsync() as any);
+
+    const selectRecord = getRecordType(recordType);
+    setRecordTypeOption(selectRecord.name);
+  }, [recordType, recordTypeOption]);
   return (
     <KeyboardAvoidingViewContainer>
       <View style={styles.container}>
-        <SelectInput
-          label="Select a type"
-          options={options}
-          value={type}
-          onValueChange={value => setType(value)}
-        />
-
-        <SelectInput
-          label="Select a category"
-          options={categories.map(cat => {
-            return {
-              label: cat.name,
-              value: cat.id,
-            };
+        <RadioButton.Group onValueChange={handleRecordType} value={recordType}>
+          <Text variant="bodyLarge">Select Record Type</Text>
+          {recordTypes.map(option => {
+            return (
+              <View
+                key={option.id}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <RadioButton value={option.id} />
+                <Text>{option.name}</Text>
+              </View>
+            );
           })}
-          value={category}
-          onValueChange={value => setCategory(value)}
-          // disabled={isSubmitting}
-        />
+        </RadioButton.Group>
+        {recordTypeOption === RECORD_TYPE.INCOME ? (
+          <SelectInput
+            label="Select income type"
+            options={incomeTypes.map(income => {
+              return {
+                label: income.name,
+                value: income.id,
+              };
+            })}
+            value={incomeType}
+            onValueChange={value => setIncomeType(value)}
+          />
+        ) : (
+          <SelectInput
+            label="Select expense type"
+            options={expenseTypes.map(expense => {
+              return {
+                label: expense.name,
+                value: expense.id,
+              };
+            })}
+            value={expenseType}
+            onValueChange={value => setExpenseType(value)}
+          />
+        )}
 
         <TextInput
           label="Amount"
